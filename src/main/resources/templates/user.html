@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Área de Usuario</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        body {
+            background: #f5f5f5;
+        }
+        .user-header {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .info-card {
+            transition: transform 0.2s;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="user-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="mb-0">👤 Área de Usuario</h1>
+                    <p class="mb-0 opacity-75">Panel de usuario estándar</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <button class="btn btn-light" 
+                            hx-post="/logout" 
+                            hx-trigger="click"
+                            hx-headers='js:{"X-CSRF-TOKEN": getCsrfToken()}'
+                            hx-swap="none"
+                            onclick="handleLogout()">
+                        🚪 Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- User Info Card -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">👤 Información de Sesión</h5>
+                        <p class="mb-1"><strong>Usuario:</strong> <span sec:authentication="name">user</span></p>
+                        <p class="mb-0"><strong>Rol:</strong> <span class="badge bg-success">USER</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Welcome Message -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title">¡Bienvenido! 👋</h2>
+                        <p class="card-text">
+                            Has iniciado sesión exitosamente en el área de usuarios. 
+                            Desde aquí puedes acceder a tus recursos y funcionalidades asignadas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card info-card border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <div class="display-4 mb-3">📄</div>
+                        <h5 class="card-title">Mis Documentos</h5>
+                        <p class="card-text text-muted">Accede a tus documentos personales</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card info-card border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <div class="display-4 mb-3">👤</div>
+                        <h5 class="card-title">Mi Perfil</h5>
+                        <p class="card-text text-muted">Gestiona tu información personal</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card info-card border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <div class="display-4 mb-3">🔔</div>
+                        <h5 class="card-title">Notificaciones</h5>
+                        <p class="card-text text-muted">Revisa tus notificaciones</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Privileges Info -->
+        <div class="alert alert-success border-0" role="alert">
+            <h5 class="alert-heading">✅ Accesos Disponibles</h5>
+            <p>Como usuario estándar, tienes acceso a:</p>
+            <ul class="mb-0">
+                <li>Área de usuarios (esta página)</li>
+                <li>Recursos públicos del sistema</li>
+                <li>Tus documentos y perfil personal</li>
+            </ul>
+        </div>
+
+        <!-- Access Restriction Info -->
+        <div class="alert alert-warning border-0" role="alert">
+            <h5 class="alert-heading">⚠️ Acceso Restringido</h5>
+            <p class="mb-0">El área de administración está restringida. Si intentas acceder sin permisos, verás un error 403 (Forbidden).</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">🧭 Navegación</h5>
+                        <div class="d-grid gap-2 d-md-flex">
+                            <a href="/public" class="btn btn-outline-secondary">
+                                🌐 Ir a página pública
+                            </a>
+                            <a href="/admin" class="btn btn-outline-danger disabled" title="No tienes permisos de administrador">
+                                🔒 Área de administración (Bloqueada)
+                            </a>
+                        </div>
+                        <small class="text-muted d-block mt-2">
+                            💡 Tip: Intenta acceder al área de admin para ver el comportamiento de Spring Security
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-muted py-4">
+        <div class="container">
+            <small>© 2026 Security App - Ejercicio de Spring Security</small>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- CSRF Token Handler -->
+    <script src="/js/htmx-csrf.js"></script>
+</body>
+</html>

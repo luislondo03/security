@@ -1,0 +1,64 @@
+spring:
+  application:
+    name: security
+  
+  # Configuración de JPA e Hibernate
+  jpa:
+    hibernate:
+      ddl-auto: none  # Deshabilitado: usamos schema.sql en su lugar
+    show-sql: true  # Mostrar SQL en consola para debug
+    properties:
+      hibernate:
+        format_sql: true  # Formatear SQL para mejor legibilidad
+        dialect: org.hibernate.dialect.H2Dialect
+    open-in-view: false  # Evitar lazy loading fuera de transacciones
+  
+  # Configuración de H2 Database
+  datasource:
+    url: jdbc:h2:mem:securitydb;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1  # Base de datos en memoria
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  h2:
+    console:
+      enabled: true  # Habilitar consola H2 en /h2-console
+      path: /h2-console
+      settings:
+        web-allow-others: false  # Solo acceso local
+  
+  # Configuración de inicialización SQL
+  sql:
+    init:
+      mode: always  # Ejecutar scripts SQL siempre
+      schema-locations: classpath:schema.sql  # Script de creación de tablas
+      # data-locations: classpath:data.sql  # Deshabilitado: los usuarios se crean vía API REST
+      continue-on-error: false  # Fallar si hay errores en scripts
+      separator: ;
+      encoding: UTF-8
+
+# Configuración del servidor
+server:
+  port: 8080
+  servlet:
+    session:
+      # Configuración de cookies de sesión seguras
+      cookie:
+        name: JSESSIONID
+        http-only: true
+        secure: false  # false para desarrollo (http://localhost), true para producción con HTTPS
+        same-site: lax
+        path: /
+        max-age: 1800  # 30 minutos en segundos
+      timeout: 30m  # Timeout de sesión: 30 minutos
+      tracking-modes: cookie  # Solo usar cookies, no URL rewriting
+
+# Configuración de logging para desarrollo
+logging:
+  level:
+    org.springframework.security: DEBUG
+    com.remington.security: DEBUG
+    org.hibernate.SQL: DEBUG  # Logs SQL de Hibernate
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # Ver parámetros SQL
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
