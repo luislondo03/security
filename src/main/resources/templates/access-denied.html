@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso Denegado</title>
+    <title th:text="#{accessDenied.title} + ' - ' + #{app.title}">Acceso Denegado</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -24,31 +24,47 @@
     </style>
 </head>
 <body>
+    <!-- Language Selector -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+        <div class="dropdown">
+            <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <span th:if="${#locale.toString() == 'es'}">🇪🇸 ES</span>
+                <span th:if="${#locale.toString() == 'en'}">🇺🇸 EN</span>
+                <span th:if="${#locale.toString() == 'pt'}">🇧🇷 PT</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                <li><a class="dropdown-item" th:href="@{/access-denied(lang='es')}">🇪🇸 ES</a></li>
+                <li><a class="dropdown-item" th:href="@{/access-denied(lang='en')}">🇺🇸 EN</a></li>
+                <li><a class="dropdown-item" th:href="@{/access-denied(lang='pt')}">🇧🇷 PT</a></li>
+            </ul>
+        </div>
+    </div>
+    
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="error-card p-5 text-center">
                     <div class="display-1 mb-4">🚫</div>
-                    <h1 class="mb-3">Acceso Denegado</h1>
-                    <p class="lead mb-4">
+                    <h1 class="mb-3" th:text="#{accessDenied.title}">Acceso Denegado</h1>
+                    <p class="lead mb-4" th:text="#{accessDenied.message}">
                         No tienes permisos para acceder a este recurso.
                     </p>
                     
                     <div class="alert alert-warning" role="alert">
-                        <strong>Error 403:</strong> Forbidden
+                        <strong th:text="#{message.forbidden}">Error 403:</strong> Forbidden
                     </div>
 
-                    <p class="text-muted mb-4">
+                    <p class="text-muted mb-4" th:text="#{accessDenied.description}">
                         Este recurso requiere privilegios de administrador. 
                         Tu rol actual no tiene los permisos necesarios.
                     </p>
 
                     <div class="d-grid gap-2">
-                        <a href="/public" class="btn btn-primary btn-lg">
-                            🏠 Ir a Página Principal
+                        <a th:href="@{/public}" class="btn btn-primary btn-lg">
+                            <span th:text="'🏠 ' + #{common.backHome}">🏠 Ir a Página Principal</span>
                         </a>
-                        <a href="/logout" class="btn btn-outline-secondary">
-                            🔄 Cerrar Sesión e Intentar con Otro Usuario
+                        <a th:href="@{/logout}" class="btn btn-outline-secondary">
+                            <span th:text="'🔄 ' + #{nav.logout}">🔄 Cerrar Sesión</span>
                         </a>
                     </div>
                 </div>

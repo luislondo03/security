@@ -36,6 +36,14 @@ spring:
       continue-on-error: false  # Fallar si hay errores en scripts
       separator: ;
       encoding: UTF-8
+  
+  # Configuración de internacionalización (i18n)
+  messages:
+    basename: messages
+    encoding: UTF-8
+    cache-duration: -1
+    fallback-to-system-locale: false
+    always-use-message-format: false
 
 # Configuración del servidor
 server:

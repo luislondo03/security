@@ -15,6 +15,30 @@ Este proyecto es una aplicación web completa que demuestra las mejores práctic
 - ✅ Templates dinámicos con Thymeleaf
 - ✅ Interactividad con HTMX
 - ✅ Arquitectura limpia en capas
+- ✅ **Internacionalización (i18n)** - Soporte para Español, Inglés y Portugués
+
+## 🌍 Internacionalización (i18n)
+
+La aplicación soporta **3 idiomas**:
+- 🇪🇸 **Español (es)** - Idioma por defecto
+- 🇺🇸 **Inglés (en)**
+- 🇧🇷 **Portugués (pt)**
+
+### Cambio de Idioma
+
+El usuario puede cambiar el idioma en cualquier momento:
+- **Mediante botones del selector**: Disponibles en todas las páginas (esquina superior derecha)
+- **Mediante parámetro URL**: Agrega `?lang=en`, `?lang=es` o `?lang=pt` a cualquier URL
+- **Persistencia**: El idioma seleccionado se guarda en una cookie y persiste entre sesiones
+
+### Archivos de Mensajes
+
+Los textos están centralizados en archivos `.properties`:
+- `messages.properties` - Inglés (idioma por defecto del framework)
+- `messages_es.properties` - Español
+- `messages_pt.properties` - Portugués
+
+Todos los textos de la aplicación (títulos, etiquetas, mensajes) están internacionalizados.
 
 ## 🛠️ Tecnologías Utilizadas
 
@@ -72,7 +96,8 @@ El proyecto sigue una **arquitectura en capas (Layered Architecture)** con separ
 src/main/java/com/remington/security/
 ├── config/                          # Configuraciones
 │   ├── SecurityConfig.java         # Configuración de Spring Security
-│   └── SessionDebugFilter.java     # Filtro de debugging de sesiones
+│   ├── SessionDebugFilter.java     # Filtro de debugging de sesiones
+│   └── InternationalizationConfig.java  # Configuración i18n
 │
 ├── controller/                      # Controladores MVC
 │   ├── AuthController.java         # Login/Logout
@@ -112,7 +137,10 @@ src/main/resources/
 │
 ├── static/                          # Recursos estáticos
 │   └── js/                         # JavaScript (si aplica)
-│
+│messages.properties              # Mensajes en inglés (default)
+├── messages_es.properties           # Mensajes en español
+├── messages_pt.properties           # Mensajes en portugués
+├── 
 ├── application.yaml                 # Configuración de la aplicación
 └── schema.sql                       # Esquema de base de datos
 ```
